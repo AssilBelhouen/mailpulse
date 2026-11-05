@@ -39,7 +39,9 @@ jobs:
           npx supabase start --exclude realtime,storage-api,imgproxy,postgres-meta,studio,edge-runtime,logflare,vector,supavisor,mailpit > /tmp/mailpulse-supabase.log 2>&1
           npx supabase db reset --no-seed
       - run: npm run test:integration
-      - run: npx playwright install --with-deps chromium
+      # Ubuntu runners already include Chromium's runtime libraries. Avoid the
+      # optional font-package downloads that stalled the Ubuntu mirror in CI.
+      - run: npx playwright install chromium
       - run: npm run test:e2e
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: failure()
