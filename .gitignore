@@ -11,3 +11,4 @@ playwright-report/
 *.mbox
 *.log
 __pycache__/
+*.tsbuildinfo
