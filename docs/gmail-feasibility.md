@@ -1,8 +1,27 @@
 # Gmail external-image feasibility gate
 
-**Result: NOT YET VALIDATED.** Automated probe checks establish endpoint behavior,
-not Gmail compatibility. Do not build the full application until actual evidence
-below passes. No recipients or real messages belong in this public repository.
+**Result: PASS for native Gmail web URL insertion, tested 2026-11-05.** Two fresh
+manually sent messages preserved the original external HTTPS image URL in received
+HTML, and recipient opening in Outlook web produced an additional origin request
+for each. The tester used Microsoft Edge (version not recorded).
+
+Trial 1 contained two copies of its image; trial 2 contained one. Both produced
+origin requests before recipient viewing, so counts include composition/delivery
+signals. Reselecting trial 2 after viewing another message produced no additional
+origin request through 21:33:44 UTC. The precise browser/proxy cache layer was not
+determined. Image blocking was not established by removing the sender from Safe
+Senders: Outlook displayed no blocked-images banner. A separate browser-blocked
+image test remains an outstanding acceptance check.
+
+**Validated insertion procedure:** In a fresh Gmail web draft, choose Insert photo
+→ Web address (URL), paste the new pixel URL, and insert it exactly once. The image
+is transparent. Send manually. The supplied received originals retained the exact
+URL rather than converting it to an attachment, data URL, or hosted copy. Treat
+this as a tested workflow, not a guarantee for every Gmail UI or recipient client.
+
+Automated probe checks establish endpoint behavior, not Gmail compatibility.
+The observations above supply the real feasibility evidence. No recipients or real
+messages belong in this public repository. The procedure below supports retesting.
 
 ## Prepare
 
@@ -60,8 +79,10 @@ Keep observation times with timezone offsets; convert to UTC to compare logs.
 
 ## Inspect the received MIME locally
 
-Download the received message as `.eml` using Gmail's message menu. Keep it outside
-the repository. The file contains personal headers and message content.
+Download the received message as `.eml` using Gmail's message menu. In Outlook web,
+use the message header's More actions → Download (choose EML if offered), as described
+in [Microsoft's instructions](https://support.microsoft.com/en-us/outlook/mail/save-an-outlook-message-as-a-eml-file-a-pdf-file-or-as-a-draft).
+Keep it outside the repository. The file contains personal headers and message content.
 
 ```bash
 npm run probe:verify -- /absolute/private/path/message.eml https://YOUR-HOST/api/pixel/TOKEN

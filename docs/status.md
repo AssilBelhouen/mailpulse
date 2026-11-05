@@ -1,9 +1,10 @@
 # Implementation status
 
-- Gmail feasibility: **not yet validated**.
-- Task 1: probe deployed and verified over public HTTPS. Real Gmail evidence is
-  still pending; the feasibility gate has not passed.
-- Tasks 2–3: pending the Gmail feasibility gate. Task 4's repository, CI, branch
+- Gmail feasibility: **passed for native Gmail web URL insertion**, repeated across
+  two fresh messages on 2026-11-05. See `docs/gmail-feasibility.md` for the method.
+- Task 1: public HTTPS probe and real MIME/origin evidence establish feasibility.
+  A browser-blocked image case remains an outstanding acceptance check.
+- Tasks 2–3: ready to implement. Task 4's repository, CI, branch
   protection, and Vercel Git deployment are configured; full-app release checks remain pending.
 - This implementation has made no production Supabase changes.
 - Public GitHub repository: https://github.com/AssilBelhouen/mailpulse
@@ -29,7 +30,24 @@
   disabled and builds ignored to prevent duplicate deployments.
 - Separate loading control: a connector-sent test was opened in Outlook web and
   produced one origin image request. This does not validate manual Gmail insertion
-  or establish a confirmed human open. Gmail web's URL insertion option is available
-  according to the tester; the actual manual-send trial is still pending.
-- Next: follow `docs/gmail-feasibility.md`, inspect received MIME locally, correlate
-  controlled recipient image display with logs, and repeat with a fresh token.
+  or establish a confirmed human open.
+- Manual trial 1 used Gmail web's native Insert photo → Web address option, with
+  Outlook web as the recipient client in Microsoft Edge. The supplied received MIME
+  passed the local preservation checker: the exact external HTTPS image URL survived.
+  The HTML contained two 1×1 image elements using that URL; the next trial must insert
+  only one. No message contents or personal headers are retained in this repository.
+- Trial 1 produced three origin requests before the recipient opened the message
+  (2026-11-05 at 21:02:10.543, 21:02:12.408, and 21:02:29.236 UTC), followed by one
+  new request at 21:03:37.169 UTC after the tester opened it with images allowed.
+  Pre-opening requests cannot be attributed more precisely to composition or delivery.
+  This supports recipient loading, but does not establish unique or human opens.
+- Manual trial 2 used one image in a fresh message. Its supplied received HTML also
+  preserved the exact original HTTPS URL. Two origin requests occurred before viewing
+  (21:07:22.653 and 21:07:25.854 UTC), and a new request followed recipient opening
+  (21:30:14.699 UTC). All times are on 2026-11-05. No additional request followed
+  reselecting the message through 21:33:44 UTC; this does not identify the cache layer.
+- Outlook displayed no blocked-images banner after removing the sender from Safe
+  Senders. Actual image blocking remains untested; a fresh browser-blocked trial has
+  been requested. The browser was reported as Microsoft Edge, version not recorded.
+- Next: implement invited-user authentication, ownership isolation, durable events,
+  and the dashboard; complete the blocked-image case and full-app release checks.
