@@ -9,7 +9,10 @@
 - Vercel authentication restored. Project `mailpulse` created in team `assil` with
   Node 22.x, public access, and previews disabled.
 - Assigned production domain: `mailpulse-assil.vercel.app` (deployment pending).
-- Vercel GitHub integration needs access to the new repository. Initial probe may
-  be deployed directly from verified source while that user-managed connection is pending.
-- Automated evidence: 5 Node tests, 4 Python MIME-verifier tests, 3 Playwright
+- Vercel GitHub integration now lists `mailpulse` linked to `AssilBelhouen/mailpulse`.
+- Main branch protection requires passing `Quality checks` and an up-to-date PR branch.
+- Automated evidence: 5 Node tests, 8 Python MIME-verifier tests, 3 Playwright
   tests; lint, typecheck, and production build pass. This is not Gmail evidence.
+- Independent review found a MIME-body false positive. Regression tests now cover
+  named attachments, unused related resources, alternative selection, duplicate image
+  sources, and inert HTML; the verifier selects the message body before inspection.

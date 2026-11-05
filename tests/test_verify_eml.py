@@ -23,6 +23,66 @@ def message(html, cte="quoted-printable"):
 
 
 class VerifyEmlTests(unittest.TestCase):
+    def test_related_resources_and_unnamed_inline_html_are_not_the_body(self):
+        related = EmailMessage()
+        related.make_related()
+        body = EmailMessage()
+        body.set_content("<p>No pixel in the body</p>", subtype="html")
+        related.attach(body)
+        resource = EmailMessage()
+        resource.set_content(f'<img src="{EXPECTED}">', subtype="html")
+        resource["Content-ID"] = "<unused-resource>"
+        related.attach(resource)
+        self.assertEqual(verifier.count_external_images(related.as_bytes(), EXPECTED), 0)
+
+        mixed = EmailMessage()
+        mixed.set_content("No pixel in the body")
+        mixed.make_mixed()
+        resource["Content-Disposition"] = "inline"
+        mixed.attach(resource)
+        self.assertEqual(verifier.count_external_images(mixed.as_bytes(), EXPECTED), 0)
+
+    def test_named_html_without_attachment_disposition_is_excluded(self):
+        mixed = EmailMessage()
+        mixed.set_content("No pixel in the body")
+        mixed.make_mixed()
+        resource = EmailMessage()
+        resource.set_content(f'<img src="{EXPECTED}">', subtype="html")
+        resource.set_param("name", "attachment.html")
+        mixed.attach(resource)
+        self.assertEqual(verifier.count_external_images(mixed.as_bytes(), EXPECTED), 0)
+
+    def test_related_start_selects_the_actual_root_and_alternative_selects_last_body(self):
+        related = EmailMessage()
+        related.make_related()
+        related.set_param("start", "<actual-root>")
+        resource = EmailMessage()
+        resource.set_content("<p>Unused first part</p>", subtype="html")
+        resource["Content-ID"] = "<unused>"
+        related.attach(resource)
+        body = EmailMessage()
+        body.set_content(f'<img src="{EXPECTED}">', subtype="html")
+        body["Content-ID"] = "<actual-root>"
+        related.attach(body)
+        self.assertEqual(verifier.count_external_images(related.as_bytes(), EXPECTED), 1)
+
+        alternative = EmailMessage()
+        alternative.make_alternative()
+        alternative.attach(body)
+        later = EmailMessage()
+        later.set_content("<p>The displayed alternative has no image</p>", subtype="html")
+        alternative.attach(later)
+        self.assertEqual(verifier.count_external_images(alternative.as_bytes(), EXPECTED), 0)
+
+    def test_duplicate_image_sources_and_inert_html_cannot_pass(self):
+        for html in [
+            f'<img src="cid:actual" src="{EXPECTED}">',
+            f'<template><img src="{EXPECTED}"></template>',
+            f'<textarea><img src="{EXPECTED}"></textarea>',
+        ]:
+            with self.subTest(html=html):
+                self.assertEqual(verifier.count_external_images(message(html), EXPECTED), 0)
+
     def test_preserved_img_src_in_transfer_encoded_html(self):
         for cte in ["quoted-printable", "base64", "7bit"]:
             with self.subTest(cte=cte):

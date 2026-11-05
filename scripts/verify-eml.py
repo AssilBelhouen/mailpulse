@@ -9,25 +9,59 @@ from urllib.parse import urlsplit
 
 
 class ImageSources(HTMLParser):
+    INERT = {"template", "textarea", "title", "script", "style", "xmp", "iframe", "noembed", "noscript"}
+
     def __init__(self, expected_url):
         super().__init__(convert_charrefs=True)
         self.expected_url = expected_url
         self.count = 0
+        self.inert_depth = 0
 
     def handle_starttag(self, tag, attrs):
-        if tag == "img" and dict(attrs).get("src") == self.expected_url:
+        if tag in self.INERT:
+            self.inert_depth += 1
+        sources = [value for name, value in attrs if name == "src"]
+        if not self.inert_depth and tag == "img" and sources == [self.expected_url]:
             self.count += 1
+
+    def handle_endtag(self, tag):
+        if tag in self.INERT and self.inert_depth:
+            self.inert_depth -= 1
 
 
 def body_html_parts(part):
-    # Do not treat forwarded emails or HTML file attachments as the outer body.
-    if part.get_content_disposition() == "attachment" or part.get_content_maintype() == "message":
-        return
-    if part.is_multipart():
-        for child in part.iter_parts():
-            yield from body_html_parts(child)
-    elif part.get_content_type() == "text/html":
-        yield part.get_content()
+    html = selected_body(part)
+    if html:
+        yield html
+
+
+def selected_body(part):
+    # Return None for a resource, "" for a supported plain-text body, and the
+    # decoded HTML otherwise. Selecting a plain body must not scan later files.
+    if part.get_content_disposition() == "attachment" or part.get_filename() or part.get_content_maintype() == "message":
+        return None
+    kind = part.get_content_type()
+    if kind == "text/plain":
+        return ""
+    if kind == "text/html":
+        return part.get_content()
+    if not part.is_multipart():
+        return None
+    parts = list(part.iter_parts())
+    if kind == "multipart/related":
+        start = part.get_param("start")
+        root = next((child for child in parts if child.get("Content-ID") == start), None) if start else next(iter(parts), None)
+        return selected_body(root) if root is not None else None
+    if kind == "multipart/alternative":
+        # The final supported alternative is the body, not a union of versions.
+        parts.reverse()
+    elif kind != "multipart/mixed":
+        return None
+    for child in parts:
+        body = selected_body(child)
+        if body is not None:
+            return body
+    return None
 
 
 def count_external_images(raw_message, expected_url):
