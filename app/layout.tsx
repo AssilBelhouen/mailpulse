@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "MailPulse — Gmail feasibility probe",
-  description: "Synthetic external-image preservation test. Full application pending validation.",
+  title: "MailPulse — email image requests",
+  description: "A simple, private dashboard for email image-request signals.",
   robots: { index: false, follow: false },
 };
 

@@ -10,8 +10,15 @@ origin requests before recipient viewing, so counts include composition/delivery
 signals. Reselecting trial 2 after viewing another message produced no additional
 origin request through 21:33:44 UTC. The precise browser/proxy cache layer was not
 determined. Image blocking was not established by removing the sender from Safe
-Senders: Outlook displayed no blocked-images banner. A separate browser-blocked
-image test remains an outstanding acceptance check.
+Senders: Outlook displayed no blocked-images banner.
+
+A third Gmail-to-Gmail test preserved one external image in received MIME but
+landed in Spam. The recipient's “Ask before displaying external images” setting
+was confirmed and restored afterward. No blocked-image banner or allow-images
+control appeared, and the rendered message contained no pixel source. Two origin
+requests during composition preceded sending; opening and reselecting generated
+none. That blocked/allow trial is inconclusive. It reinforces the detection limits
+without changing the two-message feasibility pass.
 
 **Validated insertion procedure:** In a fresh Gmail web draft, choose Insert photo
 → Web address (URL), paste the new pixel URL, and insert it exactly once. The image
@@ -24,6 +31,12 @@ The observations above supply the real feasibility evidence. No recipients or re
 messages belong in this public repository. The procedure below supports retesting.
 
 ## Prepare
+
+The numbered steps below describe the original diagnostic probe deployment.
+For the full application, create a synthetic tracking through the authenticated
+dashboard and use its URL instead of `probe:new`. Inspect that record's event
+count/timestamps instead of historical probe logs. Random unknown tokens return
+a GIF but no longer record events. An explicit fixture visit itself adds a request.
 
 1. Deploy `main` to Vercel, enable public production access, disable hosted previews,
    and set `APP_ORIGIN` to the stable production HTTPS origin. Redeploy after setting it.

@@ -1,0 +1,352 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-05T22:37:02.648483+00:00",
+  "title": "Design System: MailPulse",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Deep Teal",
+        "tonalRamp": [
+          "oklch(15% 0.0192 173.97)",
+          "oklch(27% 0.0422 173.97)",
+          "oklch(38% 0.0613 173.97)",
+          "oklch(50% 0.0767 173.97)",
+          "oklch(62% 0.0767 173.97)",
+          "oklch(74% 0.0613 173.97)",
+          "oklch(85% 0.0383 173.97)",
+          "oklch(95% 0.0153 173.97)"
+        ]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Offwhite Canvas",
+        "tonalRamp": [
+          "oklch(15% 0.0004 145.56)",
+          "oklch(27% 0.0009 145.56)",
+          "oklch(38% 0.0013 145.56)",
+          "oklch(50% 0.0017 145.56)",
+          "oklch(62% 0.0017 145.56)",
+          "oklch(74% 0.0013 145.56)",
+          "oklch(85% 0.0008 145.56)",
+          "oklch(95% 0.0003 145.56)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Working White",
+        "tonalRamp": [
+          "oklch(15% 0.0000 89.88)",
+          "oklch(27% 0.0000 89.88)",
+          "oklch(38% 0.0000 89.88)",
+          "oklch(50% 0.0000 89.88)",
+          "oklch(62% 0.0000 89.88)",
+          "oklch(74% 0.0000 89.88)",
+          "oklch(85% 0.0000 89.88)",
+          "oklch(95% 0.0000 89.88)"
+        ]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Deep Green Ink",
+        "tonalRamp": [
+          "oklch(15% 0.0057 177.04)",
+          "oklch(27% 0.0126 177.04)",
+          "oklch(38% 0.0183 177.04)",
+          "oklch(50% 0.0229 177.04)",
+          "oklch(62% 0.0229 177.04)",
+          "oklch(74% 0.0183 177.04)",
+          "oklch(85% 0.0114 177.04)",
+          "oklch(95% 0.0046 177.04)"
+        ]
+      },
+      "muted-foreground": {
+        "role": "neutral",
+        "displayName": "Quiet Gray Green",
+        "tonalRamp": [
+          "oklch(15% 0.0059 168.50)",
+          "oklch(27% 0.0129 168.50)",
+          "oklch(38% 0.0188 168.50)",
+          "oklch(50% 0.0235 168.50)",
+          "oklch(62% 0.0235 168.50)",
+          "oklch(74% 0.0188 168.50)",
+          "oklch(85% 0.0118 168.50)",
+          "oklch(95% 0.0047 168.50)"
+        ]
+      },
+      "accent": {
+        "role": "neutral",
+        "displayName": "Soft Green Wash",
+        "tonalRamp": [
+          "oklch(15% 0.0019 164.93)",
+          "oklch(27% 0.0041 164.93)",
+          "oklch(38% 0.0060 164.93)",
+          "oklch(50% 0.0075 164.93)",
+          "oklch(62% 0.0075 164.93)",
+          "oklch(74% 0.0060 164.93)",
+          "oklch(85% 0.0038 164.93)",
+          "oklch(95% 0.0015 164.93)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Pale Neutral Wash",
+        "tonalRamp": [
+          "oklch(15% 0.0015 153.77)",
+          "oklch(27% 0.0032 153.77)",
+          "oklch(38% 0.0046 153.77)",
+          "oklch(50% 0.0058 153.77)",
+          "oklch(62% 0.0058 153.77)",
+          "oklch(74% 0.0046 153.77)",
+          "oklch(85% 0.0029 153.77)",
+          "oklch(95% 0.0012 153.77)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Gray Green Rule",
+        "tonalRamp": [
+          "oklch(15% 0.0029 162.02)",
+          "oklch(27% 0.0065 162.02)",
+          "oklch(38% 0.0094 162.02)",
+          "oklch(50% 0.0118 162.02)",
+          "oklch(62% 0.0118 162.02)",
+          "oklch(74% 0.0094 162.02)",
+          "oklch(85% 0.0059 162.02)",
+          "oklch(95% 0.0024 162.02)"
+        ]
+      },
+      "input": {
+        "role": "neutral",
+        "displayName": "Field Stroke",
+        "tonalRamp": [
+          "oklch(15% 0.0047 161.03)",
+          "oklch(27% 0.0103 161.03)",
+          "oklch(38% 0.0151 161.03)",
+          "oklch(50% 0.0188 161.03)",
+          "oklch(62% 0.0188 161.03)",
+          "oklch(74% 0.0151 161.03)",
+          "oklch(85% 0.0094 161.03)",
+          "oklch(95% 0.0038 161.03)"
+        ]
+      },
+      "destructive": {
+        "role": "semantic",
+        "displayName": "Destructive Red",
+        "tonalRamp": [
+          "oklch(15% 0.0424 25.98)",
+          "oklch(27% 0.0934 25.98)",
+          "oklch(38% 0.1358 25.98)",
+          "oklch(50% 0.1697 25.98)",
+          "oklch(62% 0.1697 25.98)",
+          "oklch(74% 0.1358 25.98)",
+          "oklch(85% 0.0849 25.98)",
+          "oklch(95% 0.0339 25.98)"
+        ]
+      },
+      "selection": {
+        "role": "neutral",
+        "displayName": "Selection Wash",
+        "tonalRamp": [
+          "oklch(15% 0.0098 165.55)",
+          "oklch(27% 0.0216 165.55)",
+          "oklch(38% 0.0315 165.55)",
+          "oklch(50% 0.0393 165.55)",
+          "oklch(62% 0.0393 165.55)",
+          "oklch(74% 0.0315 165.55)",
+          "oklch(85% 0.0197 165.55)",
+          "oklch(95% 0.0079 165.55)"
+        ]
+      },
+      "scrollbar": {
+        "role": "neutral",
+        "displayName": "Scrollbar Green",
+        "tonalRamp": [
+          "oklch(15% 0.0080 158.84)",
+          "oklch(27% 0.0177 158.84)",
+          "oklch(38% 0.0257 158.84)",
+          "oklch(50% 0.0321 158.84)",
+          "oklch(62% 0.0321 158.84)",
+          "oklch(74% 0.0257 158.84)",
+          "oklch(85% 0.0161 158.84)",
+          "oklch(95% 0.0064 158.84)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page headings."
+      },
+      "brand": {
+        "displayName": "Brand",
+        "purpose": "Compact wordmark."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Confirmation titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Default explanatory copy."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form labels, controls and table headers."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Supporting descriptions."
+      },
+      "metadata": {
+        "displayName": "Metadata",
+        "purpose": "Timestamps, URLs, totals and pagination context."
+      }
+    },
+    "shadows": [
+      {
+        "name": "control-edge",
+        "value": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+        "purpose": "Inputs and outline buttons."
+      },
+      {
+        "name": "dialog-lift",
+        "value": "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+        "purpose": "Confirmation dialog."
+      }
+    ],
+    "motion": [
+      {
+        "name": "control-transition",
+        "value": "150ms cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Shared button, input and table-row transitions from Tailwind defaults."
+      },
+      {
+        "name": "dialog-duration",
+        "value": "200ms",
+        "purpose": "Duration declared on the confirmation dialog; no new animation system is introduced."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Shared primary action; form actions increase height to 44px.",
+      "html": "<button class=\"ds-button ds-button-primary\" type=\"button\">Create tracking</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:6px;font:500 14px/20px ui-sans-serif,system-ui,sans-serif;white-space:nowrap;height:36px;padding:8px 16px;cursor:pointer;transition:all 150ms cubic-bezier(.4,0,.2,1)}.ds-button:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--primary,#186352) 50%,transparent);border-color:var(--primary,#186352)}.ds-button:disabled{opacity:.5;pointer-events:none}.ds-button-primary{background:var(--primary,#186352);color:#fff;}.ds-button-primary:hover{background:color-mix(in srgb,var(--primary,#186352) 90%,transparent)}"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Shared outline action; form actions increase height to 44px.",
+      "html": "<button class=\"ds-button ds-button-outline\" type=\"button\">Refresh</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:6px;font:500 14px/20px ui-sans-serif,system-ui,sans-serif;white-space:nowrap;height:36px;padding:8px 16px;cursor:pointer;transition:all 150ms cubic-bezier(.4,0,.2,1)}.ds-button:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--primary,#186352) 50%,transparent);border-color:var(--primary,#186352)}.ds-button:disabled{opacity:.5;pointer-events:none}.ds-button-outline{background:var(--background,#f7f8f7);color:var(--foreground,#182824);border-color:var(--color-border,#d6dfda);box-shadow:0 1px 2px 0 rgb(0 0 0 / .05);}.ds-button-outline:hover{background:var(--color-accent,#e9efec)}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Shared ghost action; form actions increase height to 44px.",
+      "html": "<button class=\"ds-button ds-button-ghost\" type=\"button\">Sign out</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:6px;font:500 14px/20px ui-sans-serif,system-ui,sans-serif;white-space:nowrap;height:36px;padding:8px 16px;cursor:pointer;transition:all 150ms cubic-bezier(.4,0,.2,1)}.ds-button:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--primary,#186352) 50%,transparent);border-color:var(--primary,#186352)}.ds-button:disabled{opacity:.5;pointer-events:none}.ds-button-ghost{background:transparent;color:var(--foreground,#182824);}.ds-button-ghost:hover{background:var(--color-accent,#e9efec)}"
+    },
+    {
+      "name": "Destructive Button",
+      "kind": "button",
+      "refersTo": "button-destructive",
+      "description": "Shared destructive action; form actions increase height to 44px.",
+      "html": "<button class=\"ds-button ds-button-destructive\" type=\"button\">Delete tracking</button>",
+      "css": ".ds-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid transparent;border-radius:6px;font:500 14px/20px ui-sans-serif,system-ui,sans-serif;white-space:nowrap;height:36px;padding:8px 16px;cursor:pointer;transition:all 150ms cubic-bezier(.4,0,.2,1)}.ds-button:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--primary,#186352) 50%,transparent);border-color:var(--primary,#186352)}.ds-button:disabled{opacity:.5;pointer-events:none}.ds-button-destructive{background:var(--color-destructive,#ae2929);color:#fff;}.ds-button-destructive:hover{background:color-mix(in srgb,var(--color-destructive,#ae2929) 90%,transparent)}.ds-button-destructive:focus-visible{border-color:var(--primary,#186352);box-shadow:0 0 0 3px color-mix(in srgb,var(--color-destructive,#ae2929) 20%,transparent)}"
+    },
+    {
+      "name": "Email Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Visible form label and 44px white field.",
+      "html": "<label class=\"ds-label\" for=\"ds-email\">Recipient email</label><input class=\"ds-input\" id=\"ds-email\" type=\"email\" placeholder=\"recipient@example.com\">",
+      "css": ".ds-label{display:block;margin-bottom:8px;color:var(--foreground,#182824);font:500 14px/20px ui-sans-serif,system-ui,sans-serif}.ds-input{display:block;width:100%;height:44px;padding:4px 12px;border:1px solid var(--color-input,#bdcbc3);border-radius:6px;background:#fff;color:var(--foreground,#182824);font:400 16px/24px ui-sans-serif,system-ui,sans-serif;box-shadow:0 1px 2px 0 rgb(0 0 0 / .05);transition:color 150ms cubic-bezier(.4,0,.2,1),box-shadow 150ms cubic-bezier(.4,0,.2,1)}.ds-input::placeholder{color:var(--color-muted-foreground,#53645d)}.ds-input:focus-visible{outline:none;border-color:var(--primary,#186352);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary,#186352) 50%,transparent)}.ds-input:disabled{opacity:.5;pointer-events:none}@media(min-width:768px){.ds-input{font-size:14px;line-height:20px}}"
+    },
+    {
+      "name": "Workspace Header",
+      "kind": "nav",
+      "description": "Simple wordmark and a ghost sign-out action.",
+      "html": "<header class=\"ds-header\"><span class=\"ds-brand\">MailPulse <span class=\"ds-version\">V0</span></span><button class=\"ds-signout\" type=\"button\">Sign out</button></header>",
+      "css": ".ds-header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--color-border,#d6dfda);padding-bottom:24px;font-family:ui-sans-serif,system-ui,sans-serif}.ds-brand{font-size:20px;font-weight:600;line-height:28px;letter-spacing:-.025em;color:var(--primary,#186352)}.ds-version{margin-left:8px;font-size:12px;line-height:16px;font-weight:400;color:var(--color-muted-foreground,#53645d)}.ds-signout{height:36px;padding:8px 16px;border:0;border-radius:6px;background:transparent;color:var(--foreground,#182824);font:500 14px/20px ui-sans-serif,system-ui,sans-serif;cursor:pointer;transition:all 150ms cubic-bezier(.4,0,.2,1)}.ds-signout:hover{background:var(--color-accent,#e9efec)}.ds-signout:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--primary,#186352) 50%,transparent)}"
+    },
+    {
+      "name": "Tracking Table Region",
+      "kind": "card",
+      "refersTo": "table-surface",
+      "description": "Bordered working region with local horizontal table scrolling.",
+      "html": "<section class=\"ds-table-region\"><div class=\"ds-table-heading\">Your trackings</div><div class=\"ds-scroll\"><table class=\"ds-table\"><thead><tr><th>Recipient / created</th><th>First signal</th><th>Requests</th></tr></thead><tbody><tr><td>recipient@example.com<br><span class=\"ds-meta\">Nov 5, 2026</span></td><td class=\"ds-meta\">No signal</td><td class=\"ds-number\">0</td></tr></tbody></table></div><div class=\"ds-table-footer\">Times in your timezone.</div></section>",
+      "css": ".ds-table-region{overflow:hidden;border:1px solid var(--color-border,#d6dfda);border-radius:12px;background:#fff;color:var(--foreground,#182824);font:400 14px/20px ui-sans-serif,system-ui,sans-serif}.ds-table-heading{padding:16px 20px;border-bottom:1px solid var(--color-border,#d6dfda);font-size:15px;line-height:1.55;font-weight:600}.ds-scroll{overflow-x:auto}.ds-table{width:100%;min-width:1130px;border-collapse:collapse}.ds-table th{height:40px;padding:0 20px;text-align:left;font-weight:500;border-bottom:1px solid var(--color-border,#d6dfda)}.ds-table td{padding:20px;white-space:nowrap}.ds-table tbody tr{transition:background-color 150ms cubic-bezier(.4,0,.2,1)}.ds-table tbody tr:hover{background:color-mix(in srgb,var(--color-muted,#eef2ef) 50%,transparent)}.ds-meta,.ds-table-footer{font-size:12px;line-height:16px;color:var(--color-muted-foreground,#53645d)}.ds-number{font-weight:500;font-variant-numeric:tabular-nums;text-align:right}.ds-table-footer{padding:16px 20px;border-top:1px solid var(--color-border,#d6dfda)}"
+    },
+    {
+      "name": "Instructions Disclosure",
+      "kind": "custom",
+      "description": "Text-first expandable instructions beneath the table.",
+      "html": "<details class=\"ds-details\"><summary>How to insert your pixel in Gmail</summary><p>Copy the tracking URL and insert it once in your draft. Send the message yourself.</p></details>",
+      "css": ".ds-details{max-width:48rem;color:var(--color-muted-foreground,#53645d);font:400 14px/20px ui-sans-serif,system-ui,sans-serif}.ds-details summary{padding:8px 0;color:var(--primary,#186352);font-weight:500;cursor:pointer}.ds-details summary:focus-visible{outline:2px solid var(--primary,#186352);outline-offset:3px}.ds-details p{margin:12px 0 0}"
+    },
+    {
+      "name": "Confirmation Dialog",
+      "kind": "custom",
+      "refersTo": "confirmation-dialog",
+      "description": "Destructive confirmation surface, shown without its viewport backdrop in the preview.",
+      "html": "<section class=\"ds-dialog\" role=\"alertdialog\" aria-labelledby=\"ds-dialog-title\"><h2 id=\"ds-dialog-title\">Delete this tracking?</h2><p>Permanently delete the tracking and all its image-request events. This cannot be undone.</p><div class=\"ds-dialog-actions\"><button class=\"ds-dialog-cancel\">Cancel</button><button class=\"ds-dialog-delete\">Delete tracking</button></div></section>",
+      "css": ".ds-dialog{display:grid;gap:16px;max-width:512px;padding:24px;border:1px solid var(--color-border,#d6dfda);border-radius:12px;background:var(--background,#f7f8f7);color:var(--foreground,#182824);font-family:ui-sans-serif,system-ui,sans-serif;box-shadow:0 10px 15px -3px rgb(0 0 0 / .1),0 4px 6px -4px rgb(0 0 0 / .1)}.ds-dialog h2{margin:0;font-size:18px;font-weight:600;line-height:28px}.ds-dialog p{margin:0;font-size:14px;line-height:20px;color:var(--color-muted-foreground,#53645d)}.ds-dialog-actions{display:flex;gap:8px;justify-content:flex-end}.ds-dialog-actions button{height:36px;padding:8px 16px;border:1px solid var(--color-border,#d6dfda);border-radius:6px;font:500 14px/20px ui-sans-serif,system-ui,sans-serif;cursor:pointer;transition:all 150ms cubic-bezier(.4,0,.2,1)}.ds-dialog-cancel{background:var(--background,#f7f8f7);color:var(--foreground,#182824);box-shadow:0 1px 2px 0 rgb(0 0 0 / .05)}.ds-dialog-cancel:hover{background:var(--color-accent,#e9efec)}.ds-dialog-actions .ds-dialog-delete{background:var(--color-destructive,#ae2929);border-color:transparent;color:#fff}.ds-dialog-delete:hover{background:color-mix(in srgb,var(--color-destructive,#ae2929) 90%,transparent)}.ds-dialog-actions button:focus-visible{outline:none;border-color:var(--primary,#186352);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary,#186352) 50%,transparent)}.ds-dialog-actions .ds-dialog-delete:focus-visible{box-shadow:0 0 0 3px color-mix(in srgb,var(--color-destructive,#ae2929) 20%,transparent)}@media(max-width:639px){.ds-dialog{text-align:center}.ds-dialog-actions{flex-direction:column-reverse}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Quiet task workspace",
+    "overview": "MailPulse is a quiet task interface for routine work. Offwhite page backgrounds, white working surfaces and restrained teal actions keep attention on forms, records and their state. Its system typography is an explicit product choice, used for headings as well as body text.\n\nThe visual language is compact, readable and literal. Borders organize data; spacing separates tasks. Status and uncertainty remain visible in ordinary text. There are no promotional graphics or decorative dashboard summaries.",
+    "keyCharacteristics": [
+      "Quiet offwhite and white surfaces with one teal action accent.",
+      "System sans typography; monospace reserved for tracking URLs.",
+      "Small rounded controls, bordered data regions and restrained depth.",
+      "Visible keyboard focus, pending, error, empty and copied states."
+    ],
+    "rules": [
+      {
+        "name": "The Action Accent Rule",
+        "body": "Use teal for primary actions, the brand, instructional disclosure and success feedback; keep data and supporting text neutral.",
+        "section": "colors"
+      },
+      {
+        "name": "The Working Type Rule",
+        "body": "Use the system sans stack for interface text and headings. Reserve monospace for tracking URLs and tabular numerals for counts and timestamps.",
+        "section": "typography"
+      },
+      {
+        "name": "The Quiet Surface Rule",
+        "body": "Let borders and white-on-offwhite layering organize the page. Reserve the larger shadow and dimmed backdrop for confirmation dialogs.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do preserve the single-column login form and direct task hierarchy.",
+      "Do keep the data table horizontally scrollable within its own region on narrow screens.",
+      "Do use visible labels, keyboard focus and explicit text for pending, empty, error and copied states.",
+      "Do pair destructive actions with clear wording and the confirmation dialog."
+    ],
+    "donts": [
+      "Don't add marketing illustrations, promotional graphics or summary cards to these task surfaces.",
+      "Don't introduce a separate display font or ornamental type treatment.",
+      "Don't hide uncertainty behind a positive-colored metric or visual claim of a confirmed human open.",
+      "Don't shrink table text or collapse its columns to force a narrow viewport fit."
+    ]
+  }
+}

@@ -1,69 +1,53 @@
 import assert from "node:assert/strict";
 import { mock, test } from "node:test";
-import { createHash } from "node:crypto";
 import sharp from "sharp";
-import { GET, HEAD } from "../app/api/pixel/[token]/route";
+import { pixelHandlers } from "../lib/pixel";
 
-const token = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+const token = "A".repeat(43);
 const context = (value = token) => ({ params: Promise.resolve({ token: value }) });
-const request = () => new Request(`https://probe.example/api/pixel/${token}?recipient=private@example.invalid`, {
-  headers: { "user-agent": "private-device", "x-forwarded-for": "192.0.2.1", cookie: "private-session=value" },
+const request = () => new Request(`https://mail.example/api/pixel/${token}`);
+
+test("pixel GET returns a valid transparent GIF, awaits recording, and never sets cookies or validators", async () => {
+  let resolve!: (value: boolean) => void;
+  const written = new Promise<boolean>((done) => { resolve = done; });
+  let responded = false;
+  const { GET } = pixelHandlers(() => written);
+  const pending = GET(request(), context()).then((r) => { responded = true; return r; });
+  await new Promise(setImmediate);
+  assert.equal(responded, false);
+  resolve(true);
+  const response = await pending;
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("content-type"), "image/gif");
+  assert.equal(response.headers.get("cache-control"), "no-store, no-cache, must-revalidate, max-age=0");
+  for (const header of ["set-cookie", "etag", "last-modified"]) assert.equal(response.headers.get(header), null);
+  const bytes = Buffer.from(await response.arrayBuffer());
+  assert.equal(Number(response.headers.get("content-length")), bytes.length);
+  const { info, data } = await sharp(bytes).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  assert.deepEqual([info.width, info.height, data[3]], [1, 1, 0]);
 });
 
-test("GET serves a decodable single transparent pixel without cookies or cache validators", async () => {
-  const log = mock.method(console, "info", () => undefined);
+test("HEAD and malformed tokens skip recording; unknown and deleted tokens return the same GIF", async () => {
+  const seen: string[] = [];
+  const { GET, HEAD } = pixelHandlers(async (value) => { seen.push(value); return false; });
+  const head = await HEAD();
+  assert.equal(head.status, 200);
+  assert.equal((await head.arrayBuffer()).byteLength, 0);
+  const expected = Buffer.from(await (await GET(request(), context())).arrayBuffer());
+  for (const invalid of ["", "invalid", "a".repeat(44), "x@example.invalid", "!".repeat(43)]) {
+    assert.deepEqual(Buffer.from(await (await GET(request(), context(invalid))).arrayBuffer()), expected);
+  }
+  assert.deepEqual(seen, [token]);
+});
+
+test("database failures preserve the GIF and emit only a sanitized operational error", async () => {
+  const errors: unknown[] = [];
+  const log = mock.method(console, "error", (...values: unknown[]) => { errors.push(values); });
   try {
+    const { GET } = pixelHandlers(async () => { throw new Error(`private@example.invalid password ${token}`); });
     const response = await GET(request(), context());
     assert.equal(response.status, 200);
     assert.equal(response.headers.get("content-type"), "image/gif");
-    assert.equal(response.headers.get("cache-control"), "no-store, no-cache, must-revalidate, max-age=0");
-    for (const name of ["set-cookie", "etag", "last-modified"]) assert.equal(response.headers.get(name), null);
-    const bytes = Buffer.from(await response.arrayBuffer());
-    assert.equal(Number(response.headers.get("content-length")), bytes.length);
-    const decoded = await sharp(bytes).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
-    assert.equal(decoded.info.width, 1);
-    assert.equal(decoded.info.height, 1);
-    assert.equal(decoded.info.channels, 4);
-    assert.equal(decoded.data[3], 0);
-  } finally { log.mock.restore(); }
-});
-
-test("each GET emits only an opaque probe ID and a server timestamp, including concurrent requests", async () => {
-  const entries: string[] = [];
-  const log = mock.method(console, "info", (entry: string) => { entries.push(entry); });
-  try {
-    const before = Date.now();
-    await Promise.all(Array.from({ length: 8 }, () => GET(request(), context())));
-    assert.equal(entries.length, 8);
-    for (const line of entries) {
-      const entry = JSON.parse(line);
-      assert.deepEqual(Object.keys(entry).sort(), ["event", "observed_at", "probe_id"]);
-      assert.equal(entry.event, "mailpulse_probe_request");
-      assert.equal(entry.probe_id, createHash("sha256").update(token).digest("hex").slice(0, 16));
-      assert.ok(Date.parse(entry.observed_at) >= before);
-      assert.ok(Date.parse(entry.observed_at) <= Date.now());
-      for (const secret of [token, "private@example", "private-device", "192.0.2.1", "private-session", "https://"]) {
-        assert.equal(line.includes(secret), false);
-      }
-    }
-  } finally { log.mock.restore(); }
-});
-
-test("HEAD and malformed tokens do not emit signals, and invalid GETs serve the same GIF", async () => {
-  const entries: string[] = [];
-  const log = mock.method(console, "info", (entry: string) => { entries.push(entry); });
-  try {
-    const head = await HEAD();
-    assert.equal(head.status, 200);
-    assert.equal(head.headers.get("content-type"), "image/gif");
-    assert.equal((await head.arrayBuffer()).byteLength, 0);
-    for (const invalid of ["", "short", "a".repeat(44), "recipient@example.invalid", "!".repeat(43)]) {
-      const response = await GET(request(), context(invalid));
-      assert.equal(response.status, 200);
-      const { info, data } = await sharp(Buffer.from(await response.arrayBuffer())).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
-      assert.equal(info.width, 1);
-      assert.equal(data[3], 0);
-    }
-    assert.equal(entries.length, 0);
+    assert.deepEqual(errors, [["mailpulse_pixel_record_failed"]]);
   } finally { log.mock.restore(); }
 });
