@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background); --color-foreground: var(--foreground);
+  --color-primary: var(--primary); --color-primary-foreground: #fff;
+  --color-secondary: #e9efec; --color-secondary-foreground: #253c32;
+  --color-muted: #eef2ef; --color-muted-foreground: #53645d;
+  --color-accent: #e9efec; --color-accent-foreground: #182824;
+  --color-destructive: #ae2929; --color-border: #d6dfda; --color-input: #bdcbc3;
+  --color-ring: #186352; --color-popover: #fff; --color-popover-foreground: #182824;
+  --radius-sm: 4px; --radius-md: 6px; --radius-lg: 12px;
+}
+:root { --background: #f7f8f7; --foreground: #182824; --primary: #186352; color-scheme: light; }
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground; margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 15px; line-height: 1.55; }
+  button, summary { cursor: pointer; }
+  button:disabled { cursor: wait; }
+  input { caret-color: var(--primary); }
+  ::selection { background: #c6e6d7; color: #182824; }
+  :focus-visible { outline: 2px solid #186352; outline-offset: 3px; }
+  h1, h2, h3 { text-wrap: balance; }
+  code, .tabular-nums { font-variant-numeric: tabular-nums; }
+  * { scrollbar-color: #a1b8aa #eef2ef; scrollbar-width: thin; }
+}

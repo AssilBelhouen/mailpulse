@@ -9,8 +9,8 @@ test("the home page does not load a pixel", async ({ page }) => {
     if (request.url().includes("/api/pixel/")) pixels.push(request.url());
   });
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: "MailPulse Gmail feasibility probe", exact: true })).toBeVisible();
-  await expect(page.getByText("Gmail feasibility has not yet been validated.")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sign in to your workspace", exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/login$/);
   expect(pixels).toEqual([]);
 });
 

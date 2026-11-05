@@ -1,0 +1,99 @@
+import { expect, test } from "@playwright/test";
+import { randomUUID } from "node:crypto";
+import { createClient } from "@supabase/supabase-js";
+
+const origin = "http://127.0.0.1:3100";
+const admin = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, { auth: { persistSession: false } });
+const users: { id: string; email: string; password: string }[] = [];
+test.beforeAll(async () => {
+  for (let i = 0; i < 2; i++) {
+    const email = `browser-${randomUUID()}@example.invalid`, password = `Synthetic-${randomUUID()}`;
+    const { data, error } = await admin.auth.admin.createUser({ email, password, email_confirm: true });
+    expect(error).toBeNull();
+    users.push({ id: data.user!.id, email, password });
+  }
+});
+test.afterAll(async () => { for (const user of users) await admin.auth.admin.deleteUser(user.id); });
+
+test("anonymous access, sign-in, ownership, pixel aggregation, copy safety, pagination and deletion", async ({ page, browser, request }) => {
+  expect((await request.get("/api/trackings")).status()).toBe(401);
+  expect((await request.post("/api/trackings", { headers: { origin }, data: { recipient_email: "synthetic@example.invalid" } })).status()).toBe(401);
+  await page.goto("/dashboard");
+  await expect(page).toHaveURL(/\/login$/);
+  await page.getByLabel("Email", { exact: true }).fill(users[0].email);
+  await page.getByLabel("Password", { exact: true }).fill("incorrect-password");
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "not accepted" })).toBeVisible();
+  await page.getByLabel("Password", { exact: true }).fill(users[0].password);
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await expect(page).toHaveURL(/\/dashboard$/);
+  await expect(page.getByText("Create your first tracking", { exact: true })).toBeVisible();
+  const accidental: string[] = [];
+  page.on("request", (r) => { if (r.url().includes("/api/pixel/")) accidental.push(r.url()); });
+  await page.getByLabel("Recipient email").fill("recipient@example.invalid");
+  await page.getByRole("button", { name: "Create tracking", exact: true }).click();
+  await expect(page.getByRole("status")).toContainText("Tracking created");
+  const items = await (await page.request.get("/api/trackings")).json();
+  const first = items.items[0];
+  expect(first.pixel_url).not.toContain("recipient");
+  expect(first.signal_count).toBe(0);
+  await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.getByRole("button", { name: "Copy URL", exact: true }).first().click();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(first.pixel_url);
+  await page.getByRole("button", { name: "Copy HTML", exact: true }).first().click();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toContain(`<img src="${first.pixel_url}"`);
+  expect(accidental).toEqual([]);
+  for (const badOrigin of ["https://evil.example", "null"]) {
+    expect((await page.request.post("/api/trackings", { headers: { origin: badOrigin }, data: { recipient_email: "other@example.invalid" } })).status()).toBe(403);
+    expect((await page.request.delete(`/api/trackings/${first.id}`, { headers: { origin: badOrigin } })).status()).toBe(403);
+  }
+  expect((await page.request.post("/api/trackings", { headers: { origin }, data: { recipient_email: "bad" } })).status()).toBe(400);
+  expect((await page.request.get("/api/trackings?page=-1")).status()).toBe(400);
+  const duplicate = await page.request.post("/api/trackings", { headers: { origin }, data: { recipient_email: "recipient@example.invalid" } });
+  expect(duplicate.status()).toBe(201);
+  expect((await duplicate.json()).token).not.toBe(first.token);
+  const other = await browser.newContext();
+  expect((await other.request.post(`${origin}/api/auth/login`, { headers: { origin }, data: users[1] })).status()).toBe(200);
+  expect((await (await other.request.get(`${origin}/api/trackings`)).json()).items).toEqual([]);
+  expect((await other.request.delete(`${origin}/api/trackings/${first.id}`, { headers: { origin } })).status()).toBe(404);
+  await other.close();
+  await request.head(first.pixel_url);
+  await request.get("/api/pixel/invalid");
+  await request.get(`/api/pixel/${"Z".repeat(43)}`);
+  expect((await (await page.request.get("/api/trackings")).json()).items.find((r: {id: string}) => r.id === first.id).signal_count).toBe(0);
+  await Promise.all(Array.from({ length: 8 }, () => request.get(first.pixel_url)));
+  await page.getByRole("button", { name: "Refresh", exact: true }).click();
+  const row = page.getByRole("row").filter({ has: page.getByText(first.pixel_url, { exact: true }) });
+  await expect(row.getByTestId("signal-count")).toHaveText("8");
+  const summary = (await (await page.request.get("/api/trackings")).json()).items.find((r: {id: string}) => r.id === first.id);
+  expect(Date.parse(summary.first_signal)).toBeLessThanOrEqual(Date.parse(summary.last_signal));
+  await row.getByRole("button", { name: "Delete", exact: true }).click();
+  await expect(page.getByRole("alertdialog")).toBeVisible();
+  await page.getByRole("button", { name: "Cancel", exact: true }).click();
+  await expect(row).toBeVisible();
+  await row.getByRole("button", { name: "Delete", exact: true }).click();
+  await page.getByRole("alertdialog").getByRole("button", { name: "Delete tracking", exact: true }).click();
+  await expect(row).toHaveCount(0);
+  expect((await request.get(first.pixel_url)).status()).toBe(200);
+  expect((await admin.from("tracking_events").select("id", { head: true, count: "exact" }).eq("tracking_id", first.id)).count).toBe(0);
+  // Fill beyond a page through the same user-scoped Data API, exercising the real grants.
+  const scoped = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLISHABLE_KEY!, { auth: { persistSession: false } });
+  await scoped.auth.signInWithPassword(users[0]);
+  const seeded = await scoped.from("trackings").insert(Array.from({ length: 50 }, (_, i) => ({ owner_id: users[0].id, recipient_email: `page-${i}@example.invalid` })));
+  expect(seeded.error).toBeNull();
+  await page.getByRole("button", { name: "Refresh", exact: true }).click();
+  await expect(page.getByText("51 trackings", { exact: true })).toBeVisible();
+  expect(await page.locator("tbody tr").count()).toBe(50);
+  await page.getByRole("button", { name: "Next", exact: true }).click();
+  await expect(page.getByText("Page 2 of 2", { exact: true })).toBeVisible();
+  await expect(page.locator("tbody tr")).toHaveCount(1);
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.screenshot({ path: ".superpowers/sdd/plan/dashboard-mobile.png", fullPage: true });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.screenshot({ path: ".superpowers/sdd/plan/dashboard-desktop.png", fullPage: true });
+  expect(accidental).toEqual([]);
+  await page.getByRole("button", { name: "Sign out", exact: true }).click();
+  await expect(page).toHaveURL(/\/login$/);
+  expect((await page.request.get("/api/trackings")).status()).toBe(401);
+});
