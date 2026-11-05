@@ -78,6 +78,11 @@ project. Set the four variables in `.env.example` directly in Vercel production.
 The server secret must never enter browser code or public reports. Use the stable
 `https://mailpulse-assil.vercel.app` as `APP_ORIGIN`.
 
+After changing production variables, create a fresh Git deployment and verify actual
+event writes. The [deployment recreation API](https://vercel.com/docs/rest-api/deployments/create-a-new-deployment)
+inherits the original environment when `deploymentId` is supplied; it does not prove
+that a newly saved project secret was used.
+
 Apply the committed migration before releasing dependent code. For subsequent
 releases, authenticate the pinned CLI, link the intended project, inspect the
 pending migration, then use `npx supabase db push --remote --dry-run` followed by

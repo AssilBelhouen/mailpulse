@@ -13,7 +13,7 @@
 - Full application is merged in [PR #4](https://github.com/AssilBelhouen/mailpulse/pull/4): invited-user Auth,
   database/RLS, durable events, management API, responsive dashboard and local
   integration/browser tests. Vercel Git deployed main commit `cf834af` to production.
-  Release verification is incomplete because the recording credential is invalid.
+  Production verification passed on 2026-11-05 at 23:14 UTC (2026-11-06 at 00:14 WAT).
 - Local verification passes: lint, TypeScript, 6 Node tests, 8 MIME-verifier tests,
   production build, 2 database/HTTP integration tests and 4 Playwright tests.
   Local migration reset/replay and database advisors also passed.
@@ -21,18 +21,20 @@
   been applied to the hosted Supabase project through the connected MCP after
   local CLI replay. Hosted RLS and event-write grants match the tested schema.
   Hosted Auth settings are saved: signup and anonymous login disabled, email/password
-  enabled, stable production site URL configured. A confirmed synthetic account signs
-  in successfully. The server-only variable is present in Vercel production, but
-  Supabase rejects its value with `UNAUTHORIZED_INVALID_API_KEY` (HTTP 401).
-- Live checks verified anonymous dashboard/data protection, login, secure cookies,
-  creation without loading a pixel, valid no-store transparent GIFs, and HEAD without
-  an event. The four-GET count check failed: zero events were saved. Sanitized
-  `mailpulse_pixel_record_failed` markers and provider API logs identified the invalid
-  credential. The synthetic tracking was removed; no successful-write claim is made.
-- Next: replace the production server secret with the full unmasked key from the
-  correct Supabase project, redeploy, rerun the full live test, and remove the
-  temporary account and private credential file afterward.
-- [Quality checks passed](https://github.com/AssilBelhouen/mailpulse/actions/runs/42123738609)
+  enabled, stable production site URL configured. The server credential is configured
+  as a sensitive Vercel variable for production only and was verified by real writes.
+- Live checks passed: anonymous dashboard/data protection; login and secure cookies;
+  creation without loading a pixel; valid no-store transparent GIFs; HEAD without an
+  event; four concurrent/sequential GETs producing exactly four events; database
+  aggregates and dashboard refresh; deletion and subsequent old-token GIF; logout.
+- The initial invalid credential was diagnosed through sanitized failure markers and
+  Supabase's API status. A fresh Git deployment with corrected settings passed the
+  full flow. Recreating an old deployment via the REST API can inherit its old
+  environment; use a fresh Git deployment when validating changed project secrets.
+- The temporary test account was signed out and removed along with its sessions,
+  trackings and events. Its private credential file was deleted. Other accounts
+  were preserved. Production verification deployment: `dpl_FjxWJdEfhfobDzgoJt5z7W4JNPbD`.
+- [Quality checks passed](https://github.com/AssilBelhouen/mailpulse/actions/runs/42127741143)
   on the reviewed implementation, including migration replay, real local Auth/RLS,
   database outage handling, and the browser workflow.
 - Independent whole-branch review found no blocking defects. Deferred minor:
