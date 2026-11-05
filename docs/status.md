@@ -10,24 +10,36 @@
   restored afterward. No blocked-images banner or allow-images control appeared,
   and the rendered body contained no pixel source. Only composition requests
   reached the origin. The blocked/allow sequence is **inconclusive**, not a pass.
-- Full application is implemented in [draft PR #4](https://github.com/AssilBelhouen/mailpulse/pull/4): invited-user Auth,
+- Full application is merged in [PR #4](https://github.com/AssilBelhouen/mailpulse/pull/4): invited-user Auth,
   database/RLS, durable events, management API, responsive dashboard and local
-  integration/browser tests. Production release is pending review and hosted setup.
+  integration/browser tests. Vercel Git deployed main commit `cf834af` to production.
+  Release verification is incomplete because the recording credential is invalid.
 - Local verification passes: lint, TypeScript, 6 Node tests, 8 MIME-verifier tests,
   production build, 2 database/HTTP integration tests and 4 Playwright tests.
   Local migration reset/replay and database advisors also passed.
-- Production still serves the feasibility probe. Migration `20261105223639` has
+- Production serves the full application. Migration `20261105223639` has
   been applied to the hosted Supabase project through the connected MCP after
   local CLI replay. Hosted RLS and event-write grants match the tested schema.
   Hosted Auth settings are saved: signup and anonymous login disabled, email/password
-  enabled, stable production site URL configured. The browser agent has paused for
-  action-time confirmation on the server-only Vercel secret and temporary smoke account.
-- [Quality checks passed](https://github.com/AssilBelhouen/mailpulse/actions/runs/42123258943)
+  enabled, stable production site URL configured. A confirmed synthetic account signs
+  in successfully. The server-only variable is present in Vercel production, but
+  Supabase rejects its value with `UNAUTHORIZED_INVALID_API_KEY` (HTTP 401).
+- Live checks verified anonymous dashboard/data protection, login, secure cookies,
+  creation without loading a pixel, valid no-store transparent GIFs, and HEAD without
+  an event. The four-GET count check failed: zero events were saved. Sanitized
+  `mailpulse_pixel_record_failed` markers and provider API logs identified the invalid
+  credential. The synthetic tracking was removed; no successful-write claim is made.
+- Next: replace the production server secret with the full unmasked key from the
+  correct Supabase project, redeploy, rerun the full live test, and remove the
+  temporary account and private credential file afterward.
+- [Quality checks passed](https://github.com/AssilBelhouen/mailpulse/actions/runs/42123738609)
   on the reviewed implementation, including migration replay, real local Auth/RLS,
   database outage handling, and the browser workflow.
 - Independent whole-branch review found no blocking defects. Deferred minor:
   a failed pagination request can leave prior rows under the requested page number.
-- Hosted security advisors report no findings. Performance advisors report only
+- Database access checks confirm owner isolation and server-only event writes.
+  Supabase Auth reports [leaked password protection disabled](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection);
+  invited account passwords are administered manually. Performance advisors report
   [unused indexes](https://supabase.com/docs/guides/database/database-linter?lint=0005_unused_index)
   on the new empty tables; the required owner/time and event/time indexes are retained.
 - Public repository: https://github.com/AssilBelhouen/mailpulse
