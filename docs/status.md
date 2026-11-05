@@ -29,7 +29,19 @@
   disabled and builds ignored to prevent duplicate deployments.
 - Separate loading control: a connector-sent test was opened in Outlook web and
   produced one origin image request. This does not validate manual Gmail insertion
-  or establish a confirmed human open. Gmail web's URL insertion option is available
-  according to the tester; the actual manual-send trial is still pending.
+  or establish a confirmed human open.
+- Manual trial 1 used Gmail web's native Insert photo → Web address option, with
+  Outlook web as the recipient client in Microsoft Edge. The supplied received MIME
+  passed the local preservation checker: the exact external HTTPS image URL survived.
+  The HTML contained two 1×1 image elements using that URL; the next trial must insert
+  only one. No message contents or personal headers are retained in this repository.
+- Trial 1 produced three origin requests before the recipient opened the message
+  (2026-11-05 at 21:02:10.543, 21:02:12.408, and 21:02:29.236 UTC), followed by one
+  new request at 21:03:37.169 UTC after the tester opened it with images allowed.
+  Pre-opening requests cannot be attributed more precisely to composition or delivery.
+  This supports recipient loading, but does not establish unique or human opens.
+- Feasibility remains pending a fresh-message repeat and blocked-image/repeated-open
+  observations. The browser was reported as Microsoft Edge; its version was not
+  recorded. Trial 1 alone is not a gate pass.
 - Next: follow `docs/gmail-feasibility.md`, inspect received MIME locally, correlate
   controlled recipient image display with logs, and repeat with a fresh token.

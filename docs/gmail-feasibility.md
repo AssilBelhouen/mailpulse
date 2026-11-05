@@ -60,8 +60,10 @@ Keep observation times with timezone offsets; convert to UTC to compare logs.
 
 ## Inspect the received MIME locally
 
-Download the received message as `.eml` using Gmail's message menu. Keep it outside
-the repository. The file contains personal headers and message content.
+Download the received message as `.eml` using Gmail's message menu. In Outlook web,
+use the message header's More actions → Download (choose EML if offered), as described
+in [Microsoft's instructions](https://support.microsoft.com/en-us/outlook/mail/save-an-outlook-message-as-a-eml-file-a-pdf-file-or-as-a-draft).
+Keep it outside the repository. The file contains personal headers and message content.
 
 ```bash
 npm run probe:verify -- /absolute/private/path/message.eml https://YOUR-HOST/api/pixel/TOKEN
