@@ -10,7 +10,7 @@
   restored afterward. No blocked-images banner or allow-images control appeared,
   and the rendered body contained no pixel source. Only composition requests
   reached the origin. The blocked/allow sequence is **inconclusive**, not a pass.
-- Full application is implemented on the feature branch: invited-user Auth,
+- Full application is implemented in [draft PR #4](https://github.com/AssilBelhouen/mailpulse/pull/4): invited-user Auth,
   database/RLS, durable events, management API, responsive dashboard and local
   integration/browser tests. Production release is pending review and hosted setup.
 - Local verification passes: lint, TypeScript, 6 Node tests, 8 MIME-verifier tests,
@@ -19,7 +19,12 @@
 - Production still serves the feasibility probe. Migration `20261105223639` has
   been applied to the hosted Supabase project through the connected MCP after
   local CLI replay. Hosted RLS and event-write grants match the tested schema.
-  Hosted Auth settings and the server-only Vercel secret require dashboard access.
+  Hosted Auth settings are saved: signup and anonymous login disabled, email/password
+  enabled, stable production site URL configured. The browser agent has paused for
+  action-time confirmation on the server-only Vercel secret and temporary smoke account.
+- [Quality checks passed](https://github.com/AssilBelhouen/mailpulse/actions/runs/42123258943)
+  on the reviewed implementation, including migration replay, real local Auth/RLS,
+  database outage handling, and the browser workflow.
 - Independent whole-branch review found no blocking defects. Deferred minor:
   a failed pagination request can leave prior rows under the requested page number.
 - Hosted security advisors report no findings. Performance advisors report only
