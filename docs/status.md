@@ -27,5 +27,9 @@
   signals for those two GETs plus the browser image load; HEAD emitted none.
 - The extra user-created Vercel project `mailpulse-ruua` is retained, with previews
   disabled and builds ignored to prevent duplicate deployments.
+- Separate loading control: a connector-sent test was opened in Outlook web and
+  produced one origin image request. This does not validate manual Gmail insertion
+  or establish a confirmed human open. Gmail web's URL insertion option is available
+  according to the tester; the actual manual-send trial is still pending.
 - Next: follow `docs/gmail-feasibility.md`, inspect received MIME locally, correlate
   controlled recipient image display with logs, and repeat with a fresh token.
