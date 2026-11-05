@@ -20,6 +20,7 @@ test("anonymous access, sign-in, ownership, pixel aggregation, copy safety, pagi
   expect((await request.post("/api/trackings", { headers: { origin }, data: { recipient_email: "synthetic@example.invalid" } })).status()).toBe(401);
   await page.goto("/dashboard");
   await expect(page).toHaveURL(/\/login$/);
+  await page.screenshot({ path: ".superpowers/sdd/plan/login.png", fullPage: true });
   await page.getByLabel("Email", { exact: true }).fill(users[0].email);
   await page.getByLabel("Password", { exact: true }).fill("incorrect-password");
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
@@ -28,6 +29,7 @@ test("anonymous access, sign-in, ownership, pixel aggregation, copy safety, pagi
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
   await expect(page).toHaveURL(/\/dashboard$/);
   await expect(page.getByText("Create your first tracking", { exact: true })).toBeVisible();
+  await page.screenshot({ path: ".superpowers/sdd/plan/dashboard-empty.png", fullPage: true });
   const accidental: string[] = [];
   page.on("request", (r) => { if (r.url().includes("/api/pixel/")) accidental.push(r.url()); });
   await page.getByLabel("Recipient email").fill("recipient@example.invalid");
@@ -69,6 +71,7 @@ test("anonymous access, sign-in, ownership, pixel aggregation, copy safety, pagi
   expect(Date.parse(summary.first_signal)).toBeLessThanOrEqual(Date.parse(summary.last_signal));
   await row.getByRole("button", { name: "Delete", exact: true }).click();
   await expect(page.getByRole("alertdialog")).toBeVisible();
+  await page.screenshot({ path: ".superpowers/sdd/plan/delete-dialog.png", fullPage: true });
   await page.getByRole("button", { name: "Cancel", exact: true }).click();
   await expect(row).toBeVisible();
   await row.getByRole("button", { name: "Delete", exact: true }).click();

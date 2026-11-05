@@ -16,9 +16,15 @@
 - Local verification passes: lint, TypeScript, 6 Node tests, 8 MIME-verifier tests,
   production build, 2 database/HTTP integration tests and 4 Playwright tests.
   Local migration reset/replay and database advisors also passed.
-- Production still serves the feasibility probe. No application migration has yet
-  been applied to the hosted Supabase project. Hosted Auth settings and the
-  server-only Vercel secret require authenticated dashboard access.
+- Production still serves the feasibility probe. Migration `20261105223639` has
+  been applied to the hosted Supabase project through the connected MCP after
+  local CLI replay. Hosted RLS and event-write grants match the tested schema.
+  Hosted Auth settings and the server-only Vercel secret require dashboard access.
+- Independent whole-branch review found no blocking defects. Deferred minor:
+  a failed pagination request can leave prior rows under the requested page number.
+- Hosted security advisors report no findings. Performance advisors report only
+  [unused indexes](https://supabase.com/docs/guides/database/database-linter?lint=0005_unused_index)
+  on the new empty tables; the required owner/time and event/time indexes are retained.
 - Public repository: https://github.com/AssilBelhouen/mailpulse
 - Production origin: https://mailpulse-assil.vercel.app
 - Vercel Git integration deploys protected main automatically; hosted previews are

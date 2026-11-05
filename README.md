@@ -85,6 +85,11 @@ pending migration, then use `npx supabase db push --remote --dry-run` followed b
 the preceding application. Verify migration history and security/performance
 advisors afterward. Never reset a hosted database.
 
+The first migration was generated and replayed with the CLI locally, then applied
+through the connected Supabase MCP because hosted CLI authentication was unavailable.
+Its committed version matches hosted migration history; subsequent changes should
+use the CLI workflow above.
+
 Vercel Git integration deploys protected `main` automatically. Hosted previews
 are disabled in the project and `vercel.json`; GitHub Actions needs no Vercel
 credentials or separate deployment job. Keep the pixel route public, without
