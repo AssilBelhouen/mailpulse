@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { Brand } from "./brand";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
@@ -69,7 +70,7 @@ export function Dashboard() {
   const pages = Math.max(1, Math.ceil(total / 50));
   return <div className="mx-auto max-w-[1440px] px-5 py-7 sm:px-10">
     <header className="mb-12 flex items-center justify-between border-b pb-6">
-      <span className="text-xl font-semibold tracking-tight text-primary">MailPulse <span className="ml-2 text-xs font-normal text-muted-foreground">V0</span></span>
+      <Brand version />
       <Button variant="ghost" onClick={logout}>Sign out</Button>
     </header>
     <main>
@@ -97,6 +98,7 @@ export function Dashboard() {
         <div className="flex flex-wrap items-center justify-between gap-3 border-t px-5 py-4 text-xs text-muted-foreground"><span>Times in {zone || "your timezone"}. <span className="sm:hidden">Scroll the table to see all columns.</span></span><div className="flex items-center gap-3"><Button variant="outline" size="sm" disabled={loading || page === 1} onClick={() => refresh(page - 1)}>Previous</Button><span>Page {page} of {pages}</span><Button variant="outline" size="sm" disabled={loading || page >= pages} onClick={() => refresh(page + 1)}>Next</Button></div></div>
       </section>
       <details className="my-8 max-w-3xl text-sm"><summary className="py-2 font-medium text-primary">How to insert your pixel in Gmail</summary><div className="mt-3 space-y-3 text-muted-foreground"><p>Copy the tracking URL. In a fresh Gmail web draft, choose Insert photo → Web address (URL), paste the URL and insert it once. The 1×1 image is transparent. Send the message yourself.</p><p>This method was verified with Gmail web and Microsoft Edge. Requests can start while you compose. Gmail-to-Gmail Spam delivery also preserved the URL but produced no recipient-view request in our test. A missing signal does not mean the email was unread.</p><p>Copy HTML is for an HTML editor or manual draft editing. Pasting literal HTML code into Gmail does not insert an image.</p><p>Deleting a tracking permanently removes its events and stops that URL recording. Otherwise, records remain until you delete them.</p></div></details>
+      <footer className="mb-4 text-xs text-muted-foreground"><a href="/agent-skill.md" className="underline underline-offset-4 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary">Browser agent guide</a></footer>
     </main>
     <AlertDialog open={!!selected} onOpenChange={(open) => { if (!open && !deleting) setSelected(null); }}><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Delete this tracking?</AlertDialogTitle><AlertDialogDescription className="break-words">Permanently delete the tracking for {selected?.recipient_email} and all its image-request events. Its URL will stop recording. This cannot be undone.</AlertDialogDescription></AlertDialogHeader>{error && <p role="alert" className="text-sm text-destructive">{error}</p>}<AlertDialogFooter><AlertDialogCancel disabled={deleting}>Cancel</AlertDialogCancel><AlertDialogAction variant="destructive" disabled={deleting} onClick={(event) => { event.preventDefault(); void remove(); }}>{deleting ? "Deleting…" : "Delete tracking"}</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>
   </div>;

@@ -119,6 +119,12 @@ MailPulse is a quiet task interface for routine work. Offwhite page backgrounds,
 
 The visual language is compact, readable and literal. Borders organize data; spacing separates tasks. Status and uncertainty remain visible in ordinary text. There are no promotional graphics or decorative dashboard summaries.
 
+The brand mark is an authored envelope whose lower edge forms a pulse, drawn in
+white on the primary teal. `public/logo.svg` is its source; the same asset appears
+beside the wordmark at 36px on login and dashboard and serves as the SVG favicon.
+Keep its square aspect ratio and pair it with the visible MailPulse name in the
+interface; the adjacent image is decorative for assistive technology.
+
 **Key Characteristics:**
 
 - Quiet offwhite and white surfaces with one teal action accent.

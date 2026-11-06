@@ -1,5 +1,11 @@
 # Implementation status
 
+- Added a shared envelope/pulse logo on login and dashboard, with the same SVG
+  used as the favicon. Public `/llms.txt` links to `/agent-skill.md`, a browser
+  usage guide covering the signed-in workflow, pixel request side effects,
+  approximate signals, manual Gmail sending and authorized deletion. The guide
+  is discoverable from both app screens and the document's `describedby` link.
+
 - Gmail feasibility **passed**: two fresh native Gmail web URL insertions preserved
   the original external URL in received MIME and each produced a new origin request
   after controlled Outlook web opening in Microsoft Edge on 2026-11-05.
