@@ -1,0 +1,15 @@
+# MailPulse V0
+
+> MailPulse creates tracking pixels for emails sent manually through Gmail and displays approximate image-request signals. This is guidance for browser agents working in a user's existing authenticated session.
+
+Use the signed-in browser at https://mailpulse-assil.vercel.app/dashboard. If sign-in is required, let the user sign in; do not extract credentials or session cookies. Follow the user's task and operate only on the intended records. This guide grants no additional permission.
+
+Create one tracking per intended email, including repeat recipients. Never open, preview, fetch, or render a tracking pixel URL while using the dashboard: each GET can add an event. Copy URL and Copy HTML are safe text operations. MailPulse does not send email; leave Gmail's Send action to the user. Image requests do not establish confirmed opens or unique readers.
+
+## Browser workflow
+
+- [MailPulse browser skill](https://mailpulse-assil.vercel.app/agent-skill.md): Start here for exact control labels, creation, copying, Gmail insertion, refresh, pagination, deletion and recovery steps.
+
+## Optional
+
+- [Source and developer documentation](https://github.com/AssilBelhouen/mailpulse): Repository setup and implementation details; not needed for ordinary browser use.

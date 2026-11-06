@@ -8,6 +8,15 @@ or sends email.
 [Production](https://mailpulse-assil.vercel.app) · [Release status](docs/status.md) ·
 [Validated Gmail procedure and limitations](docs/gmail-feasibility.md)
 
+Browser agents can start at [/llms.txt](https://mailpulse-assil.vercel.app/llms.txt)
+and follow the [browser skill](https://mailpulse-assil.vercel.app/agent-skill.md).
+Both are public instructions; recipient data still requires login. A ready-to-use
+prompt for an agent with your signed-in browser:
+
+> Read https://mailpulse-assil.vercel.app/llms.txt and follow its browser skill.
+> Use my existing MailPulse browser session. [Describe the task and recipient.]
+> Do not open tracking pixel URLs. Leave Gmail's Send action to me.
+
 Image requests are approximate signals. Composition, sender views, scanners and
 forwarding can add requests. Blocking, Spam handling, proxies and caching can
 suppress them, including repeated human openings. Counts are neither unique
